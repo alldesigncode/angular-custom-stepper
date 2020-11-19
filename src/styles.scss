@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+}
+
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  box-sizing: inherit;
+  line-height: 1.6;
+  font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
+  overscroll-behavior-y: none;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

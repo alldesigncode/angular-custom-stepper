@@ -1,0 +1,100 @@
+:host {
+  display: grid;
+  grid-template-rows: 80px 1fr;
+  grid-row-gap: 20px;
+  justify-content: center;
+  grid-template-columns: min-content;
+
+  .step-progress {
+    grid-row: 1 / 2;
+    grid-column: 1 / -1;
+    align-self: center;
+  }
+
+  .step-content {
+    position: relative;
+    align-self: start;
+    grid-row: 2 / -1;
+    grid-column: 1 / -1;
+  }
+}
+
+.container {
+  display: inline-flex;
+  padding: 10px;
+  position: relative;
+
+  svg#checkbox {
+    width: 50px;
+    height: 50px;
+    stroke: #23c274;
+    stroke-width: 6;
+
+    .circle {
+      stroke-dasharray: 320;
+      stroke-dashoffset: 320;
+      fill: #d2d2d2;
+      transition: stroke-dashoffset 0.5s,
+        fill 0.5s 0.3s cubic-bezier(0.45, 0, 0.55, 1);
+    }
+
+    .check {
+      stroke-dasharray: 70;
+      stroke-dashoffset: 70;
+      stroke: #fff;
+      fill: none;
+      transition: all 0.5s 0.5s cubic-bezier(0.45, 0, 0.55, 1);
+    }
+  }
+}
+
+.check-box {
+  display: flex;
+  align-items: center;
+}
+
+.progress-line {
+  width: 200px;
+  height: 2px;
+  background: #d2d2d2;
+
+  .progress-percent {
+    height: inherit;
+    width: 0%;
+    transition: all 0.5s 0.5s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+}
+
+.progress-line.active {
+  .progress-percent {
+    background: #234dc2;
+    width: 50%;
+  }
+}
+
+.progress-line.complete {
+  .progress-percent {
+    width: 100%;
+    background: #23c274;
+  }
+}
+
+.check-box.active {
+  svg#checkbox {
+    .circle {
+      fill: #234dc2;
+    }
+  }
+}
+.check-box.complete {
+  svg#checkbox {
+    .circle {
+      stroke-dashoffset: 0;
+      fill: #23c274;
+    }
+
+    .check {
+      stroke-dashoffset: 0;
+    }
+  }
+}

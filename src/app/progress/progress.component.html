@@ -1,0 +1,18 @@
+<div class="step-progress">
+  <div class="container" #container>
+    <ng-container *ngFor="let item of itemProgressList; index as i">
+      <div [ngClass]="'check-box ' + 'check-box-' + (i + 1)">
+        <svg id="checkbox" viewBox="0 0 100 100">
+          <circle class="circle" cx="50.5" cy="49" r="45" />
+          <polyline class="check" points="28.5,51.9 41.9,65.3 72.5,32.8 " />
+        </svg>
+        <div class="progress-line" *ngIf="i !== itemLength - 1">
+          <div class="progress-percent"></div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="step-content">
+  <ng-content select="app-progress-step"></ng-content>
+</div>
