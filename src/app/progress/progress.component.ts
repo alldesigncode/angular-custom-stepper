@@ -1,6 +1,5 @@
 import {
   AfterContentInit,
-  AfterViewInit,
   Component,
   ContentChildren,
   EventEmitter,
@@ -11,7 +10,7 @@ import {
 } from '@angular/core';
 import { ProgressHelperService } from './progress-helper.service';
 import { ProgressStepComponent } from './progress-step/progress-step.component';
-import { UiHelper } from './uiHelper';
+import { Status, UiHelper } from './uiHelper';
 
 @Component({
   selector: 'app-progress',
@@ -20,11 +19,8 @@ import { UiHelper } from './uiHelper';
 })
 export class ProgressComponent
   extends UiHelper
-  implements OnInit, AfterContentInit, AfterViewInit {
+  implements OnInit, AfterContentInit {
   itemLength: number;
-  itemProgressList: number[] = [];
-
-  public activeIndex = 0;
 
   @Input() public set selectedIndex(value) {
     this.activeIndex = value || 0;
@@ -63,10 +59,6 @@ export class ProgressComponent
     this.initStepIndex();
   }
 
-  ngAfterViewInit() {
-    this.initActiveElement(this.activeIndex);
-  }
-
   public next() {
     this.increaseStep();
   }
@@ -78,14 +70,14 @@ export class ProgressComponent
   private increaseStep() {
     if (
       this.activeIndex === this.itemLength - 1 &&
-      this.completedProgressElement.completedElIndex !== this.activeIndex
+      this.itemProgressList[this.activeIndex].status !== Status.COMPLETED
     ) {
       this.completeLastStep();
     }
 
     if (this.activeIndex < this.itemLength - 1) {
       this.activeIndex++;
-      this.switchActiveElement(this.activeIndex);
+      this.switchStatusNext(this.activeIndex);
       this.setActiveActiveStep(this.activeIndex);
       this.emitStateChange();
     }
@@ -94,13 +86,13 @@ export class ProgressComponent
   private decreaseStep() {
     if (
       this.activeIndex === this.itemLength - 1 &&
-      this.completedProgressElement.completedElIndex === this.activeIndex
+      this.itemProgressList[this.activeIndex].status === Status.COMPLETED
     ) {
-      this.removeLastComplete();
+      this.undoLastComplete();
     } else {
       if (this.activeIndex > 0) {
         this.activeIndex--;
-        this.switchActiveElementPrev(this.activeIndex);
+        this.switchStatusPrev(this.activeIndex);
         this.setActiveActiveStep(this.activeIndex);
         this.emitStateChange();
       }
@@ -149,12 +141,17 @@ export class ProgressComponent
     return this.steps.toArray();
   }
 
+  protected generateProgressArray(length): any[] {
+    return [...Array(length).keys()].map((key) => {
+      return {
+        stepIndex: key,
+        status: key === this.activeIndex ? Status.IN_PROGRESS : Status.PENDING,
+      };
+    });
+  }
+
   private initProgress(value): void {
     this.itemLength = value || 0;
     this.itemProgressList = this.generateProgressArray(this.itemLength);
-  }
-
-  private generateProgressArray(length): number[] {
-    return [...Array(length).keys()];
   }
 }

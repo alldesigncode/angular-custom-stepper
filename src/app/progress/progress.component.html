@@ -1,13 +1,37 @@
 <div class="step-progress">
   <div class="container" #container>
     <ng-container *ngFor="let item of itemProgressList; index as i">
-      <div [ngClass]="'check-box ' + 'check-box-' + (i + 1)">
+      <div
+        class="check-box"
+        [ngClass]="{
+          complete: item.status === 'completed',
+          active: item.status === 'in progress'
+        }"
+      >
         <svg id="checkbox" viewBox="0 0 100 100">
           <circle class="circle" cx="50.5" cy="49" r="45" />
           <polyline class="check" points="28.5,51.9 41.9,65.3 72.5,32.8 " />
         </svg>
-        <div class="progress-line" *ngIf="i !== itemLength - 1">
+        <div
+          [ngClass]="{
+            complete: item.status === 'completed',
+            active: item.status === 'in progress'
+          }"
+          class="progress-line"
+          *ngIf="i !== itemLength - 1"
+        >
           <div class="progress-percent"></div>
+        </div>
+        <div class="info">
+          <span class="step">step {{ i + 1 }}</span>
+          <span
+            class="progress-info"
+            [ngClass]="{
+              'completed': item.status === 'completed',
+              'in-progress': item.status === 'in progress'
+            }"
+            >{{ item.status }}</span
+          >
         </div>
       </div>
     </ng-container>
